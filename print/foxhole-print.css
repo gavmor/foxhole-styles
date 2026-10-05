@@ -109,25 +109,24 @@ h2.sec {
   border-bottom: 2px solid var(--fx-ink); padding-bottom: 3px;
 }
 
-/* ---- Note boxes: thin rule, slight paper-light fill ---- */
+/* ---- Note boxes: correction-patch style. The ONLY notebox style —
+ * notes stuck on after typing, as a dirty-white tape / correction-fluid
+ * patch, slightly rotated, whisper of shadow. No border; the lift sells
+ * it. Keep the shadow faint — paper on paper, not a UI card. Previously
+ * also a bordered variant; collapsed because the correction patch is the
+ * defining diegetic voice for annotations, not a style choice. ---- */
 .notebox {
-  border: 1.5px solid var(--fx-ink);
-  padding: 8px 12px;
-  background: rgba(255, 252, 244, 0.35);
-  page-break-inside: avoid;
-}
-
-/* ---- Correction patch: notes stuck on after typing. Dirty-white
- * tape / correction-fluid patch, slightly rotated, whisper of shadow.
- * No border; the lift sells it. Keep the shadow faint — paper on paper,
- * not a UI card. ---- */
-.notebox-tape {
   position: relative;
-  margin: 14px 10px;
-  padding: 10px 16px 9px;
-  background: linear-gradient(175deg, #f7f3e7 0%, #f0ead7 55%, #e8e1cb 100%);
-  transform: rotate(-0.7deg);
-  box-shadow: 1px 1px 2px rgba(74, 62, 38, 0.18);
+  margin: var(--fx-space-2xl) var(--fx-space-lg);
+  padding: var(--fx-space-lg) var(--fx-space-3xl) 9px;
+  background: linear-gradient(
+    calc(var(--fx-angle-patch-gradient) * 1deg),
+    var(--fx-patch-light) calc(var(--fx-gradient-stop-patch-light) * 1%),
+    var(--fx-patch-mid)   calc(var(--fx-gradient-stop-patch-mid)   * 1%),
+    var(--fx-patch-dark)  calc(var(--fx-gradient-stop-patch-dark)  * 1%)
+  );
+  transform: rotate(calc(var(--fx-angle-patch-print) * 1deg));
+  box-shadow: 1px 1px 2px var(--fx-patch-shadow);
   page-break-inside: avoid;
   font-size: 9.6pt;
 }

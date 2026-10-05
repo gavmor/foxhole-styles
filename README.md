@@ -14,6 +14,17 @@ shared dependency of:
 - **gavmor/homebrewery** — the Homebrewery fork whose default V3 theme is
   Foxhole.
 
+## What it looks like
+
+The whole print pattern library on two sheets. Regenerate with
+`weasyprint samples/pattern-showcase.html samples/pattern-showcase.pdf`
+after any stylesheet or token change and compare — a surprising diff in
+these screenshots means a surprising diff in every downstream consumer.
+
+| Sheet 1 — masthead, stamp, routing, section head, spec table, correction patch | Sheet 2 — routing telemetry, signature block, correction patch |
+|---|---|
+| ![Pattern showcase sheet 1](docs/screenshots/pattern-showcase-1.jpg) | ![Pattern showcase sheet 2](docs/screenshots/pattern-showcase-2.jpg) |
+
 ## Layout
 
 ```
@@ -42,6 +53,12 @@ homebrewery/
                          snippets.js, picker art
   themes/fonts/Foxhole/  woff2 faces + fonts.less
   themes/assets/         foxholePlate.png
+samples/
+  pattern-showcase.html  Exercises every print pattern — rasterize-and-look
+                         contract. Rebuilds to docs/screenshots/*.jpg.
+  plates/                Prebaked plates the showcase renders against.
+docs/
+  screenshots/           README screenshots of the pattern showcase.
 ```
 
 ## Tokens

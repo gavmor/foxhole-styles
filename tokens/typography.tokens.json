@@ -1,0 +1,110 @@
+{
+  "font": {
+    "$type": "fontFamily",
+    "body": {
+      "$value": ["TT2020", "Courier Prime", "monospace"],
+      "$description": "Body face: TT2020 Style B, a scanned 1970s typewriter face with contextual alternates ('calt' 1). No bold weight exists — emulate it with overstrike."
+    },
+    "display": {
+      "$value": ["Special Elite", "TT2020", "monospace"],
+      "$description": "Display face: Special Elite, a grungy typewriter face for mastheads, h1 and stamps."
+    }
+  },
+
+  "font-weight": {
+    "$type": "fontWeight",
+    "regular": {
+      "$value": 400,
+      "$description": "The only weight TT2020 ships. Headings and <strong> stay at 400 and are double-struck instead."
+    },
+    "strong": {
+      "$value": 700,
+      "$description": "Real bold, available only where the body face is Courier Prime (print fallback). Prefer overstrike."
+    }
+  },
+
+  "font-size": {
+    "$type": "dimension",
+    "display": {
+      "$value": { "value": 29.333333, "unit": "px" },
+      "$description": "Masthead h1 (22pt in print)."
+    },
+    "stamp": {
+      "$value": { "value": 28, "unit": "px" },
+      "$description": "Rubber-stamp lettering (21pt in print)."
+    },
+    "section": {
+      "$value": { "value": 15.333333, "unit": "px" },
+      "$description": "Ruled section heading, h2.sec (11.5pt in print)."
+    },
+    "body": {
+      "$value": { "value": 14, "unit": "px" },
+      "$description": "Body copy (10.5pt in print)."
+    },
+    "table": {
+      "$value": { "value": 12.8, "unit": "px" },
+      "$description": "Spec-table cells (9.6pt in print)."
+    },
+    "footer": {
+      "$value": { "value": 10.666667, "unit": "px" },
+      "$description": "Page-number margin box (8pt in print)."
+    },
+    "label": {
+      "$value": { "value": 10, "unit": "px" },
+      "$description": "Letterspaced form furniture in the footer margin boxes (7.5pt in print)."
+    }
+  },
+
+  "font-scale": {
+    "$type": "number",
+    "$description": "Web theme type scale, in em relative to the page font size. Use as calc(1em * var(--fx-font-scale-*)) or @fx-font-scale-* * 1em.",
+    "display": { "$value": 1.9, "$description": "h1 / masthead." },
+    "section": { "$value": 1.25, "$description": "h2." },
+    "subsection": { "$value": 1.1, "$description": "h3." },
+    "minor": { "$value": 1, "$description": "h4." },
+    "table": { "$value": 0.95, "$description": "Tables and dispatch-slip code blocks." },
+    "caption": { "$value": 0.9, "$description": "h5 / captions." }
+  },
+
+  "line-height": {
+    "$type": "number",
+    "print": { "$value": 1.42, "$description": "Body leading in the WeasyPrint print pipeline." },
+    "web": { "$value": 1.45, "$description": "Body leading in the Homebrewery V3 theme." },
+    "heading": { "$value": 1.2, "$description": "All heading levels." }
+  },
+
+  "tracking": {
+    "$type": "dimension",
+    "$description": "Absolute letter-spacing used by the print pipeline.",
+    "masthead": {
+      "$value": { "value": 2.666667, "unit": "px" },
+      "$description": "Masthead h1 (2pt in print)."
+    },
+    "sub": {
+      "$value": { "value": 4, "unit": "px" },
+      "$description": "Masthead subtitle line (3pt in print)."
+    },
+    "section": {
+      "$value": { "value": 3, "unit": "px" },
+      "$description": "Ruled section heading."
+    },
+    "label": {
+      "$value": { "value": 2.666667, "unit": "px" },
+      "$description": "Footer margin-box form furniture (2pt in print)."
+    },
+    "stamp": {
+      "$value": { "value": 7, "unit": "px" },
+      "$description": "Rubber-stamp lettering."
+    }
+  },
+
+  "tracking-scale": {
+    "$type": "number",
+    "$description": "Web theme letter-spacing, in em relative to the local font size. Use as calc(1em * var(--fx-tracking-scale-*)).",
+    "display": { "$value": 0.12, "$description": "h1 / masthead." },
+    "section": { "$value": 0.18, "$description": "h2." },
+    "subsection": { "$value": 0.1, "$description": "h3." },
+    "minor": { "$value": 0.08, "$description": "h4, h5, table headers." },
+    "stamp": { "$value": 0.3, "$description": "Rubber-stamp lettering." }
+  }
+}

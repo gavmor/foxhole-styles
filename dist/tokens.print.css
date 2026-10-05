@@ -1,0 +1,92 @@
+/**
+ * Foxhole design tokens — GENERATED, DO NOT EDIT.
+ * Source: tokens/*.tokens.json (W3C DTCG). Rebuild with `npm run build`.
+ * @gavmor/foxhole-styles v1.0.0 · style-dictionary 5.6.0
+ */
+
+:root {
+  --fx-ink: #26221a; /** Typewriter ribbon ink — body text, rules, masthead and table borders. */
+  --fx-muted: #5a5245; /** Quiet ink — margin-box footers, captions, marginalia, page numbers. */
+  --fx-rule: #8a8069; /** Faint hairline rule between spec-table rows. */
+  --fx-dots: #6b6252; /** Routing-block dotted leaders. */
+  --fx-leader: #99907a; /** Table-of-contents leaders (web theme only). */
+  --fx-stamp: #9c1f1f; /** Rubber-stamp red — DRAFT / RESTRICTED / SECRET stamps and their double border. */
+  --fx-stamp-pass: #1f6b34; /** Rubber-stamp green — PASSED / APPROVED clearance stamps. */
+  --fx-paper-base: #e9dec6; /** Plate base paper tone (BASE in plate/make_plate.py). */
+  --fx-paper-patch: #e4d6ba; /** Plate patch tone, the blotchier second paper pass (PATCH in plate/make_plate.py). */
+  --fx-paper-fallback: #f2ecdc; /** Flat aged-paper fallback used by the web theme before the plate PNG paints over it. */
+  --fx-paper-wash: rgba(255, 252, 244, 0.35); /** Translucent paper wash behind note boxes and dispatch-slip code blocks. */
+  --fx-patch-light: #f7f3e7; /** Correction-patch gradient highlight stop (0%). */
+  --fx-patch-mid: #f0ead7; /** Correction-patch gradient mid stop (55%). */
+  --fx-patch-dark: #e8e1cb; /** Correction-patch gradient shadow stop (100%). */
+  --fx-patch-shadow: rgba(74, 62, 38, 0.18); /** Paper-on-paper lift shadow under a stuck-on correction patch. */
+  --fx-crease: #6e5837; /** Fold crease (CREASE in plate/make_plate.py). */
+  --fx-highlight: #faf6ec; /** Embossed crease highlight (HIGHLIGHT in plate/make_plate.py). */
+  --fx-smudge: #5f4b32; /** Handling smudge (SMUDGE in plate/make_plate.py). */
+  --fx-stain: #785428; /** Coffee-ring stain (STAIN in plate/make_plate.py). */
+  --fx-dark: #967850; /** Dark aging wash (DARK in plate/make_plate.py). */
+  --fx-opacity-stamp-print: 0.78; /** Rubber-stamp ink opacity in the print pipeline. */
+  --fx-opacity-stamp-web: 0.8; /** Rubber-stamp ink opacity in the web theme. */
+  --fx-angle-stamp-print: -9; /** Stamp tilt in the print pipeline. */
+  --fx-angle-stamp-web: -8; /** Stamp tilt in the web theme. */
+  --fx-angle-patch-print: -0.7; /** Correction-patch tilt in the print pipeline. */
+  --fx-angle-patch-web: -0.6; /** Correction-patch tilt in the web theme. */
+  --fx-angle-patch-gradient: 175; /** Direction of the correction-patch linear gradient (light -> mid -> dark). */
+  --fx-overstrike-offset: 0.45px; /** Horizontal offset of the second strike that fakes bold. The web theme applies it as a text-shadow; the print pipeline doubles the glyphs in markup (diegetic-docs bin/typewriter.py), because WeasyPrint has neither faux bold nor text-shadow. */
+  --fx-gradient-stop-patch-light: 0; /** patch.light stop. */
+  --fx-gradient-stop-patch-mid: 55; /** patch.mid stop. */
+  --fx-gradient-stop-patch-dark: 100; /** patch.dark stop. */
+  --fx-space-3xs: 2px; /** Stamp bottom padding, closing table rule. */
+  --fx-space-2xs: 3px; /** Section-heading underline gap. */
+  --fx-space-xs: 4px; /** Table cell padding (block), stamp top padding. */
+  --fx-space-sm: 6px; /** Table cell padding (inline), dotted-leader gutter. */
+  --fx-space-md: 8px; /** Note-box padding (block). */
+  --fx-space-lg: 10px; /** Masthead padding (inline), correction-patch padding (block). */
+  --fx-space-xl: 12px; /** Note-box padding (inline), masthead bottom padding. */
+  --fx-space-2xl: 14px; /** Masthead top padding, correction-patch outer margin, stamp padding (inline). */
+  --fx-space-3xl: 16px; /** Correction-patch padding (inline). */
+  --fx-space-4xl: 20px; /** Stamp left padding — compensates the trailing letter-spacing so the glyphs sit centred. */
+  --fx-page-width: 8.5in; /** 8.5in. */
+  --fx-page-height: 11in; /** 11in. */
+  --fx-page-margin-top: 0.72in; /** 0.72in. */
+  --fx-page-margin-right: 0.8in; /** 0.8in. */
+  --fx-page-margin-bottom: 0.75in; /** 0.75in. */
+  --fx-page-margin-left: 0.8in; /** 0.8in. */
+  --fx-border-hairline: 1px; /** Single rule between spec-table rows. */
+  --fx-border-thin: 1.5px; /** Note-box / dispatch-slip border. */
+  --fx-border-rule: 2px; /** Section-heading underline, dotted leaders, closing table rule. */
+  --fx-border-double: 3px; /** Double rule under a table header. */
+  --fx-border-heavy: 4px; /** Stamp double border, horizontal-rule divider. */
+  --fx-border-masthead: 5px; /** Masthead top and bottom double rules. */
+  --fx-font-body: "TT2020", "Courier Prime", monospace; /** Body face: TT2020 Style B, a scanned 1970s typewriter face with contextual alternates ('calt' 1). No bold weight exists — emulate it with overstrike. */
+  --fx-font-display: "Special Elite", "TT2020", monospace; /** Display face: Special Elite, a grungy typewriter face for mastheads, h1 and stamps. */
+  --fx-font-weight-regular: 400; /** The only weight TT2020 ships. Headings and <strong> stay at 400 and are double-struck instead. */
+  --fx-font-weight-strong: 700; /** Real bold, available only where the body face is Courier Prime (print fallback). Prefer overstrike. */
+  --fx-font-size-display: 22pt; /** Masthead h1 (22pt in print). */
+  --fx-font-size-stamp: 21pt; /** Rubber-stamp lettering (21pt in print). */
+  --fx-font-size-section: 11.5pt; /** Ruled section heading, h2.sec (11.5pt in print). */
+  --fx-font-size-body: 10.5pt; /** Body copy (10.5pt in print). */
+  --fx-font-size-table: 9.6pt; /** Spec-table cells (9.6pt in print). */
+  --fx-font-size-footer: 8pt; /** Page-number margin box (8pt in print). */
+  --fx-font-size-label: 7.5pt; /** Letterspaced form furniture in the footer margin boxes (7.5pt in print). */
+  --fx-font-scale-display: 1.9; /** h1 / masthead. */
+  --fx-font-scale-section: 1.25; /** h2. */
+  --fx-font-scale-subsection: 1.1; /** h3. */
+  --fx-font-scale-minor: 1; /** h4. */
+  --fx-font-scale-table: 0.95; /** Tables and dispatch-slip code blocks. */
+  --fx-font-scale-caption: 0.9; /** h5 / captions. */
+  --fx-line-height-print: 1.42; /** Body leading in the WeasyPrint print pipeline. */
+  --fx-line-height-web: 1.45; /** Body leading in the Homebrewery V3 theme. */
+  --fx-line-height-heading: 1.2; /** All heading levels. */
+  --fx-tracking-masthead: 2pt; /** Masthead h1 (2pt in print). */
+  --fx-tracking-sub: 3pt; /** Masthead subtitle line (3pt in print). */
+  --fx-tracking-section: 3px; /** Ruled section heading. */
+  --fx-tracking-label: 2pt; /** Footer margin-box form furniture (2pt in print). */
+  --fx-tracking-stamp: 7px; /** Rubber-stamp lettering. */
+  --fx-tracking-scale-display: 0.12; /** h1 / masthead. */
+  --fx-tracking-scale-section: 0.18; /** h2. */
+  --fx-tracking-scale-subsection: 0.1; /** h3. */
+  --fx-tracking-scale-minor: 0.08; /** h4, h5, table headers. */
+  --fx-tracking-scale-stamp: 0.3; /** Rubber-stamp lettering. */
+  --fx-shadow-patch: 1px 1px 2px 0px var(--fx-patch-shadow); /** Paper-on-paper lift under a correction patch. Keep it faint — this is a slip of tape, not a UI card. */
+}

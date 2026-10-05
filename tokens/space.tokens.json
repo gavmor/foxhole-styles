@@ -1,0 +1,38 @@
+{
+  "space": {
+    "$type": "dimension",
+    "$description": "Padding / margin scale, taken from the print pattern library's literals. Stored in px; the print build converts to pt (1pt = 4/3 px).",
+    "3xs": { "$value": { "value": 2, "unit": "px" }, "$description": "Stamp bottom padding, closing table rule." },
+    "2xs": { "$value": { "value": 3, "unit": "px" }, "$description": "Section-heading underline gap." },
+    "xs": { "$value": { "value": 4, "unit": "px" }, "$description": "Table cell padding (block), stamp top padding." },
+    "sm": { "$value": { "value": 6, "unit": "px" }, "$description": "Table cell padding (inline), dotted-leader gutter." },
+    "md": { "$value": { "value": 8, "unit": "px" }, "$description": "Note-box padding (block)." },
+    "lg": { "$value": { "value": 10, "unit": "px" }, "$description": "Masthead padding (inline), correction-patch padding (block)." },
+    "xl": { "$value": { "value": 12, "unit": "px" }, "$description": "Note-box padding (inline), masthead bottom padding." },
+    "2xl": { "$value": { "value": 14, "unit": "px" }, "$description": "Masthead top padding, correction-patch outer margin, stamp padding (inline)." },
+    "3xl": { "$value": { "value": 16, "unit": "px" }, "$description": "Correction-patch padding (inline)." },
+    "4xl": { "$value": { "value": 20, "unit": "px" }, "$description": "Stamp left padding — compensates the trailing letter-spacing so the glyphs sit centred." }
+  },
+
+  "page": {
+    "$type": "dimension",
+    "$description": "US Letter portrait geometry for the WeasyPrint @page rule. The plate PNG is sized to the full page and positioned at the negated left/top margins, because WeasyPrint anchors @page backgrounds to the page area, not the page box.",
+    "width": { "$value": { "value": 816, "unit": "px" }, "$description": "8.5in." },
+    "height": { "$value": { "value": 1056, "unit": "px" }, "$description": "11in." },
+    "margin-top": { "$value": { "value": 69.12, "unit": "px" }, "$description": "0.72in." },
+    "margin-right": { "$value": { "value": 76.8, "unit": "px" }, "$description": "0.8in." },
+    "margin-bottom": { "$value": { "value": 72, "unit": "px" }, "$description": "0.75in." },
+    "margin-left": { "$value": { "value": 76.8, "unit": "px" }, "$description": "0.8in." }
+  },
+
+  "border": {
+    "$type": "dimension",
+    "$description": "Rule weights. The Foxhole look leans on double rules; a 3px double renders as two hairlines, 5px as two heavy lines.",
+    "hairline": { "$value": { "value": 1, "unit": "px" }, "$description": "Single rule between spec-table rows." },
+    "thin": { "$value": { "value": 1.5, "unit": "px" }, "$description": "Note-box / dispatch-slip border." },
+    "rule": { "$value": { "value": 2, "unit": "px" }, "$description": "Section-heading underline, dotted leaders, closing table rule." },
+    "double": { "$value": { "value": 3, "unit": "px" }, "$description": "Double rule under a table header." },
+    "heavy": { "$value": { "value": 4, "unit": "px" }, "$description": "Stamp double border, horizontal-rule divider." },
+    "masthead": { "$value": { "value": 5, "unit": "px" }, "$description": "Masthead top and bottom double rules." }
+  }
+}

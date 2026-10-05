@@ -1,1 +1,47 @@
-{"description":"Foxhole field-paperwork design system: fonts, aged-paper plates, print CSS patterns, and the Homebrewery V3 theme. Shared dependency of the diegetic-docs skill and the Homebrewery fork.","files":["fonts/","plate/","print/","homebrewery/","tokens.css"],"license":"MIT","name":"foxhole-styles","repository":{"type":"git","url":"https://github.com/gavmor/foxhole-styles.git"},"version":"1.0.0"}
+{
+  "name": "@gavmor/foxhole-styles",
+  "version": "1.0.0",
+  "description": "Foxhole field-paperwork design system: DTCG design tokens, fonts, aged-paper plates, print CSS patterns, and the Homebrewery V3 theme. Shared dependency of the diegetic-docs skill and the Homebrewery fork.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gavmor/foxhole-styles.git"
+  },
+  "sideEffects": false,
+  "main": "./dist/tokens.js",
+  "types": "./dist/tokens.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "default": "./dist/tokens.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.print.css": "./dist/tokens.print.css",
+    "./tokens.less": "./dist/tokens.less",
+    "./tokens.json": "./dist/tokens.json",
+    "./manifest.json": "./dist/manifest.json",
+    "./print/foxhole-print.css": "./print/foxhole-print.css",
+    "./fonts/*": "./fonts/*",
+    "./plate/*": "./plate/*",
+    "./theme/*": "./homebrewery/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "tokens/",
+    "fonts/",
+    "plate/",
+    "print/",
+    "homebrewery/"
+  ],
+  "scripts": {
+    "validate": "node scripts/validate-tokens.mjs",
+    "build": "npm run validate && node scripts/build.mjs",
+    "test": "node scripts/check-contract.mjs",
+    "check": "npm run build && npm test && git diff --exit-code -- dist"
+  },
+  "devDependencies": {
+    "style-dictionary": "^5.6.0"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "shadow": {
+    "$type": "shadow",
+    "patch": {
+      "$value": {
+        "color": "{patch.shadow}",
+        "offsetX": { "value": 1, "unit": "px" },
+        "offsetY": { "value": 1, "unit": "px" },
+        "blur": { "value": 2, "unit": "px" },
+        "spread": { "value": 0, "unit": "px" }
+      },
+      "$description": "Paper-on-paper lift under a correction patch. Keep it faint — this is a slip of tape, not a UI card."
+    }
+  },
+
+  "opacity": {
+    "$type": "number",
+    "stamp-print": { "$value": 0.78, "$description": "Rubber-stamp ink opacity in the print pipeline." },
+    "stamp-web": { "$value": 0.8, "$description": "Rubber-stamp ink opacity in the web theme." }
+  },
+
+  "angle": {
+    "$type": "number",
+    "$description": "Rotations in degrees. Negative is counter-clockwise. Use as rotate(calc(var(--fx-angle-*) * 1deg)).",
+    "stamp-print": { "$value": -9, "$description": "Stamp tilt in the print pipeline." },
+    "stamp-web": { "$value": -8, "$description": "Stamp tilt in the web theme." },
+    "patch-print": { "$value": -0.7, "$description": "Correction-patch tilt in the print pipeline." },
+    "patch-web": { "$value": -0.6, "$description": "Correction-patch tilt in the web theme." },
+    "patch-gradient": { "$value": 175, "$description": "Direction of the correction-patch linear gradient (light -> mid -> dark)." }
+  },
+
+  "overstrike": {
+    "$type": "dimension",
+    "offset": {
+      "$value": { "value": 0.45, "unit": "px" },
+      "$description": "Horizontal offset of the second strike that fakes bold. The web theme applies it as a text-shadow; the print pipeline doubles the glyphs in markup (diegetic-docs bin/typewriter.py), because WeasyPrint has neither faux bold nor text-shadow."
+    }
+  },
+
+  "gradient-stop": {
+    "$type": "number",
+    "$description": "Stop positions (percent) of the correction-patch gradient, paired with patch.light / patch.mid / patch.dark.",
+    "patch-light": { "$value": 0, "$description": "patch.light stop." },
+    "patch-mid": { "$value": 55, "$description": "patch.mid stop." },
+    "patch-dark": { "$value": 100, "$description": "patch.dark stop." }
+  }
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Foxhole Styles — Pattern Showcase</title>
+<link rel="stylesheet" href="../dist/tokens.print.css">
+<style>
+/* Font faces — the dist/ tokens expose paths via vars but WeasyPrint still
+   needs @font-face declarations. */
+@font-face { font-family: "TT2020";
+  src: url("../fonts/tt2020-styleb-regular.ttf");
+  font-weight: normal; font-style: normal; }
+@font-face { font-family: "TT2020";
+  src: url("../fonts/tt2020-styleb-italic.ttf");
+  font-weight: normal; font-style: italic; }
+@font-face { font-family: "Special Elite";
+  src: url("../fonts/special-elite-regular.ttf");
+  font-weight: normal; font-style: normal; }
+</style>
+<link rel="stylesheet" href="../print/foxhole-print.css">
+<style>
+/* Sample page needs plate paths resolved to the samples/ directory. */
+@page {
+  background-image: url("plates/plate-1.png");
+}
+@page:nth(1) { background-image: url("plates/plate-1.png"); }
+@page:nth(2) { background-image: url("plates/plate-2.png"); }
+
+body { margin: 0; }
+.pagebreak { page-break-after: always; break-after: page; }
+.signblock { margin-top: 24px; }
+.signblock .rrow { margin: 4px 0; }
+h2.sec + p { margin-top: 4px; }
+p { margin: 6px 0; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: Masthead, stamp, routing, section head, spec table, notebox -->
+<div class="masthead">
+  <div class="stamp">RESTRICTED</div>
+  <h1>FOXHOLE PATTERN SHOWCASE</h1>
+  <div style="text-align: center; letter-spacing: 2pt; font-size: 10pt;">PRINT PATTERN LIBRARY · FORM SHOWCASE</div>
+</div>
+
+<div class="rrow"><span class="lab">DOCUMENT</span><span class="dots"></span>
+  <span>foxhole-styles / pattern-showcase</span></div>
+<div class="rrow"><span class="lab">VERSION</span><span class="dots"></span>
+  <span>v1.0 (tokens via dist/)</span></div>
+<div class="rrow"><span class="lab">FROM</span><span class="dots"></span>
+  <span>Design System, Speaking Woods Command</span></div>
+<div class="rrow"><span class="lab">TO</span><span class="dots"></span>
+  <span>Consumers: diegetic-docs, homebrewery</span></div>
+
+<h2 class="sec">I. &nbsp;THE PATTERNS</h2>
+<p>This sheet exercises every pattern in <code>print/foxhole-print.css</code>
+so a visual change in the stylesheet is caught at a glance. Masthead with
+rubber stamp above; routing block with dotted leaders; section heads with
+ruled underlines; the spec table below; and overleaf, the correction-patch <code>.notebox</code>, preformatted routing
+telemetry, and signature block.</p>
+
+<h2 class="sec">II. &nbsp;SPECIFICATION TABLE</h2>
+<table class="spec">
+  <thead>
+    <tr><th>Primitive</th><th>Class</th><th>Token source</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Masthead (double-rule box)</td><td><code>.masthead</code></td><td>space.border.heavy, color.ink</td><td>Shipped</td></tr>
+    <tr><td>Rubber stamp</td><td><code>.stamp</code></td><td>color.stamp, effect.angle.stamp-print</td><td>Shipped</td></tr>
+    <tr><td>Routing block (dotted leader)</td><td><code>.rrow</code></td><td>color.dots, space.border.rule</td><td>Shipped</td></tr>
+    <tr><td>Section head</td><td><code>h2.sec</code></td><td>color.ink, space.border.rule</td><td>Shipped</td></tr>
+    <tr><td>Spec table</td><td><code>table.spec</code></td><td>color.rule, space.border.double</td><td>Shipped</td></tr>
+    <tr><td>Correction-patch note</td><td><code>.notebox</code></td><td>color.patch.*, effect.shadow.patch, effect.angle.patch-print</td><td>Shipped (consolidated from <code>.notebox-tape</code>)</td></tr>
+  </tbody>
+</table>
+
+<div class="notebox">
+<strong>NOTE — CORRECTION PATCH:</strong> The <code>.notebox</code> class
+now carries the correction-patch styling as its only form: a dirty-white
+tape slip, rotated <code>-0.7deg</code>, with a faint paper-on-paper
+shadow. The previous bordered variant is retired because the correction
+patch is the defining voice for diegetic annotations — not a style choice.
+Downstream consumers that want a bordered callout should define their own
+class instead of overloading <code>.notebox</code>.
+</div>
+
+<div class="pagebreak"></div>
+
+<!-- PAGE 2: Second plate, dispatch-slip code block, signature block -->
+<div class="masthead" style="padding: 10px 12px; margin-bottom: 12px;">
+  <h1 style="font-size: 15pt;">PATTERN SHOWCASE — SHEET 2</h1>
+  <div style="text-align: center; letter-spacing: 2pt; font-size: 9pt;">ROUTING TELEMETRY, SIGNATURE BLOCK, CORRECTION PATCH</div>
+</div>
+
+<h2 class="sec">III. &nbsp;ROUTING TELEMETRY (preformatted)</h2>
+<pre style="margin: 8px 0; font-family: 'TT2020', monospace; font-size: 9.5pt; line-height: 1.5;">WAR         141 (live-1)
+WAR ID      3b7f1c42-...-9a0e
+DATE        Day 27 of the 141st War
+WAR START   Day 1, 0400 hours
+ROUTING     Fwd. Logistics -> Rear Depot</pre>
+
+<h2 class="sec">IV. &nbsp;SIGNATURE BLOCK</h2>
+<div class="signblock">
+  <div class="rrow"><span class="lab">AUTHORIZING OFFICER</span><span class="dots"></span>
+    <span>_____________________</span></div>
+  <div class="rrow"><span class="lab">DATE / TIME</span><span class="dots"></span>
+    <span>_____________________</span></div>
+  <br>
+  <div class="rrow"><span class="lab">RECEIVING QUARTERMASTER</span><span class="dots"></span>
+    <span>_____________________</span></div>
+  <div class="rrow"><span class="lab">DATE / TIME</span><span class="dots"></span>
+    <span>_____________________</span></div>
+</div>
+
+<div class="notebox">
+<strong>SHOWCASE NOTE:</strong> This showcase is the visual contract.
+When the stylesheet or tokens change, re-render and compare: a surprising
+diff in the screenshots means a surprising diff in every downstream
+consumer. Keep the showcase small and comprehensive, not pretty.
+</div>
+
+</body>
+</html>

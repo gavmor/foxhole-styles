@@ -1,3 +1,8 @@
 node_modules/
 npm-debug.log*
 .DS_Store
+
+# Build artifacts of samples/ (regenerate with weasyprint + pdftoppm)
+samples/*.pdf
+samples/pattern-showcase-*.png
+samples/plates/

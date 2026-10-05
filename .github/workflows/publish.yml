@@ -1,0 +1,87 @@
+name: Publish to GitHub Packages
+
+# Publishes @gavmor/foxhole-styles to the GitHub Packages npm registry and
+# attaches a signed build-provenance attestation to the exact tarball that is
+# published.
+#
+# npm's own `--provenance` flag only works against registry.npmjs.org, so the
+# provenance here comes from actions/attest-build-provenance, which signs the
+# sha256 of the packed tarball through Sigstore and stores the attestation on
+# the repository. Verify a downloaded tarball with:
+#
+#   gh attestation verify <tarball> --repo gavmor/foxhole-styles
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build, pack and attest but do not publish
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout
+      packages: write # npm publish to npm.pkg.github.com
+      id-token: write # OIDC token for Sigstore signing
+      attestations: write # store the provenance attestation
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.x
+          registry-url: https://npm.pkg.github.com
+          scope: '@gavmor'
+          # Release builds must not reuse a cache.
+          package-manager-cache: false
+
+      - name: Install (locked)
+        run: npm ci
+
+      - name: Validate, build and check the dist contract
+        run: npm run check
+
+      - name: Pack
+        id: pack
+        run: |
+          set -euo pipefail
+          tarball="$(npm pack --silent)"
+          echo "tarball=${tarball}" >> "$GITHUB_OUTPUT"
+          echo "sha256=$(sha256sum "${tarball}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          ls -l "${tarball}"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: ${{ steps.pack.outputs.tarball }}
+
+      - name: Publish
+        if: ${{ inputs.dry_run != true }}
+        run: npm publish "${{ steps.pack.outputs.tarball }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          {
+            echo "### @gavmor/foxhole-styles"
+            echo
+            echo "- tarball: \`${{ steps.pack.outputs.tarball }}\`"
+            echo "- sha256: \`${{ steps.pack.outputs.sha256 }}\`"
+            echo "- published: \`${{ inputs.dry_run != true }}\`"
+            echo
+            echo '```'
+            echo 'gh attestation verify <tarball> --repo ${{ github.repository }}'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

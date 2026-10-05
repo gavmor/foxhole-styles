@@ -9,6 +9,9 @@
     "url": "https://github.com/gavmor/foxhole-styles.git"
   },
   "sideEffects": false,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "main": "./dist/tokens.js",
   "types": "./dist/tokens.d.ts",
   "exports": {

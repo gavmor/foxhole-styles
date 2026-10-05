@@ -180,6 +180,73 @@ The plate baker's palette constants (`BASE`, `PATCH`, `CREASE`,
 (`--fx-paper-base`, `--fx-crease`, …) so documents can tint UI chrome to
 match the paper they are printed on.
 
+## Install
+
+Published to the **GitHub Packages** npm registry as
+`@gavmor/foxhole-styles`. GitHub Packages requires authentication even for
+public packages, so consumers need a token with `read:packages` and an
+`.npmrc` that maps the `@gavmor` scope:
+
+```ini
+# .npmrc
+@gavmor:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+```bash
+export NODE_AUTH_TOKEN=<PAT with read:packages>
+npm install @gavmor/foxhole-styles
+```
+
+Inside GitHub Actions, `secrets.GITHUB_TOKEN` is sufficient (with
+`permissions: packages: read`).
+
+Entry points:
+
+```js
+import tokens from '@gavmor/foxhole-styles';            // dist/tokens.js (+ .d.ts)
+```
+
+```css
+@import '@gavmor/foxhole-styles/tokens.css';
+@import '@gavmor/foxhole-styles/tokens.print.css';
+@import '@gavmor/foxhole-styles/print/foxhole-print.css';
+```
+
+Also exported: `./tokens.less`, `./tokens.json`, `./manifest.json`,
+`./fonts/*`, `./plate/*`, `./theme/*` (the Homebrewery V3 theme tree).
+
+Python consumers do not use npm — they read `dist/tokens.json` and
+`dist/manifest.json` from a Git-URL-pinned checkout.
+
+### Verifying provenance
+
+Every published tarball is signed through Sigstore by the release workflow
+and carries a GitHub build-provenance attestation. To check that a tarball
+really came from this repository's CI:
+
+```bash
+npm pack @gavmor/foxhole-styles          # downloads the published tarball
+gh attestation verify gavmor-foxhole-styles-*.tgz --repo gavmor/foxhole-styles
+```
+
+## Publishing
+
+`.github/workflows/publish.yml` runs on a published GitHub Release (and can
+be dispatched manually). It runs `npm ci && npm run check`, packs the
+tarball, attests it with `actions/attest-build-provenance`, then publishes
+*that exact tarball* to `npm.pkg.github.com` using the workflow's
+`GITHUB_TOKEN` — no long-lived npm token exists. The job holds
+`packages: write`, `id-token: write` (OIDC, for Sigstore) and
+`attestations: write`; everything else is denied by a top-level
+`permissions: {}`.
+
+npm's own `--provenance` flag is not usable here: it only works against
+`registry.npmjs.org`, hence the separate attestation step.
+
+`.github/workflows/ci.yml` runs the same `npm run check` plus
+`npm pack --dry-run` on every push to `master` and every pull request.
+
 ## Versioning
 
 Changesets manages versions and the changelog. Asset policy:

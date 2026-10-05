@@ -187,6 +187,17 @@ Distribution name `foxhole-styles`, import package `foxhole_styles`,
 fragment**. Pin a tag (or, for a fully reproducible lock, the tag's commit
 SHA); never pin a branch.
 
+A consumer whose own build backend is **hatchling** must opt into direct
+references, or its metadata generation fails before it ever reaches this
+package:
+
+```toml
+[tool.hatch.metadata]
+allow-direct-references = true
+```
+
+(setuptools and PDM need no such flag.)
+
 The distribution version is read out of `package.json` at build time
 (`[tool.hatch.version]` with a regex source), so there is no second version
 literal to forget: a Changesets bump moves the npm package, the git tag and

@@ -391,3 +391,37 @@ Changesets manages versions and the changelog. Asset policy:
 - **minor** — new fonts, tokens, themes or patterns
 - **major** — removed or renamed tokens, dropped font families, breaking
   LESS variable changes, manifest schema changes
+
+### Adding a changeset
+
+After making a change, describe it for the changelog:
+
+```bash
+npx changeset
+```
+
+Choose the bump level (patch / minor / major) and write a short summary.
+This creates a markdown file in `.changeset/` — commit it with your PR.
+
+### Cutting a release
+
+Merging PRs with changesets into `master` triggers the **Release** workflow,
+which opens (or updates) a "Version Packages" PR. That PR:
+
+1. Runs `changeset version` — bumps `version` in `package.json`, consumes
+   the changeset files, and updates `CHANGELOG.md`.
+2. Shows the diff for review.
+
+Merging the "Version Packages" PR into `master` tags the commit
+(`v<version>`) and creates a GitHub Release, which triggers the
+**Publish** workflow (npm pack, attest, publish to GitHub Packages).
+
+The Python package version is single-sourced from `package.json`
+(`[tool.hatch.version]` regex), so the npm bump moves the git tag and the
+Python wheel together. Pin Python consumers to the new tag:
+
+```
+foxhole-styles @ git+https://github.com/gavmor/foxhole-styles.git@v1.2.3
+```
+
+CI verifies that the npm and Python wheel versions agree on every PR.

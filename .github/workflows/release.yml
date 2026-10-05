@@ -1,0 +1,74 @@
+# Changesets Release
+#
+# On push to master (typically merging the "Version Packages" PR that
+# Changesets opens), this workflow:
+#
+# 1. Checks whether changesets/action consumed any changesets.
+# 2. If so, the action has already committed the version bump and CHANGELOG
+#    update to master — we tag the commit and create a GitHub release.
+# 3. The `release: published` event triggers the existing publish.yml
+#    workflow, which builds, attests, and publishes to GitHub Packages.
+#
+# If there are unconsumed changesets (normal feature-branch pushes), the
+# action opens or updates a "Version Packages" PR instead.
+
+name: Release
+
+on:
+  push:
+    branches: [master]
+
+permissions: {}
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # push tags + create releases
+      pull-requests: write  # open/update the Version Packages PR
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.x
+
+      - run: npm ci
+
+      - name: Create Release Pull Request or Tag & Release
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: npm run version
+          publish: echo "noop"
+          title: "Version Packages"
+          commit: "Version Packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and create GitHub release
+        if: steps.changesets.outputs.hasChangesets == 'false' && steps.changesets.outputs.published != 'true'
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v${VERSION}"
+
+          # Only tag+release if this tag doesn't already exist
+          if git rev-parse "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists, skipping release"
+            exit 0
+          fi
+
+          git tag "${TAG}"
+          git push origin "${TAG}"
+
+          gh release create "${TAG}" \
+            --title "${TAG}" \
+            --generate-notes \
+            --latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -42,6 +42,9 @@ homebrewery/
                          snippets.js, picker art
   themes/fonts/Foxhole/  woff2 faces + fonts.less
   themes/assets/         foxholePlate.png
+pyproject.toml         The Python distribution (`foxhole-styles`)
+foxhole_styles/        Its import package — the accessor API
+tests/                 unittest suite for the Python package
 ```
 
 ## Tokens
@@ -110,13 +113,15 @@ JavaScript:
 import tokens, { fxInk } from '@gavmor/foxhole-styles';
 ```
 
-Python (see the data package for the packaged accessor):
+Python:
 
 ```python
-import json, importlib.resources as res
-tokens = json.loads(res.files("foxhole_styles").joinpath("tokens.json").read_text())
-ink = tokens["tokens"]["fx-ink"]["value"]        # "#26221a"
+import foxhole_styles as fx
+fx.token("fx-ink")        # '#26221a'
 ```
+
+See [Python package](#python-package) for the install line and the rest of
+the accessor.
 
 ### Units, and why the dimensions are in px
 
@@ -158,6 +163,126 @@ token files are authored in; v4 only understands the older string forms.
   (`0.325cm` paragraph gap and friends). Centimetres are not a legal DTCG
   dimension unit and the cm values do not line up with the print px scale,
   so that rhythm is not tokenised yet.
+
+## Python package
+
+The same tokens and assets, for Python consumers (the diegetic-docs
+WeasyPrint pipeline, the plate baker, anything that generates CSS). There is
+no PyPI release — install it from a **pinned repo URL**:
+
+```bash
+pip install "foxhole-styles @ git+https://github.com/gavmor/foxhole-styles.git@v1.0.0"
+```
+
+or in a consumer's `pyproject.toml`:
+
+```toml
+dependencies = [
+  "foxhole-styles @ git+https://github.com/gavmor/foxhole-styles.git@v1.0.0",
+]
+```
+
+Distribution name `foxhole-styles`, import package `foxhole_styles`,
+`pyproject.toml` at the repo root — so the URL needs **no `#subdirectory=`
+fragment**. Pin a tag (or, for a fully reproducible lock, the tag's commit
+SHA); never pin a branch.
+
+The distribution version is read out of `package.json` at build time
+(`[tool.hatch.version]` with a regex source), so there is no second version
+literal to forget: a Changesets bump moves the npm package, the git tag and
+the wheel together, and `@v1.2.3` can never install a wheel claiming
+something else.
+
+### Reading tokens
+
+```python
+import foxhole_styles as fx
+
+fx.token("fx-ink")                  # '#26221a'
+fx.token("ink")                     # same — 'fx-' prefix optional
+fx.token("paper.base")              # '#e9dec6' — DTCG path spelling
+fx.token("fxInk")                   # same — JS spelling
+fx.token("fx-angle-stamp-print")    # -9  (numbers stay numbers)
+
+fx.tokens()                         # {'fx-ink': '#26221a', ...} all 84
+fx.token_names()
+fx.tokens_of_type("color")
+
+t = fx.token_info("fx-paper-base")
+t.value, t.type, t.path, t.description   # '#e9dec6', 'color', ('paper','base'), '…'
+t.css_var, t.css_reference               # '--fx-paper-base', 'var(--fx-paper-base)'
+```
+
+Values are the resolved ones — identical to `dist/tokens.js` and
+`dist/tokens.json`, and identical to `dist/tokens.css` except for the one
+token the CSS build emits as a `var()` reference (`--fx-shadow-patch`), which
+Python gives you flattened. `tests/test_accessor.py` asserts that parity
+against the packaged CSS, print CSS, LESS, JS and `.d.ts` outputs, so an
+import can never disagree with a stylesheet.
+
+### Reading assets
+
+Everything the npm package ships is packaged data, laid out under the import
+package exactly as it is in the repo, so the package-root-relative paths in
+`dist/manifest.json` resolve verbatim:
+
+```python
+fx.print_css_path()                         # …/print/foxhole-print.css
+fx.font_path("tt2020-styleb-regular.ttf")   # …/fonts/…
+fx.fonts(".ttf")                            # all three TTFs
+fx.plate_baker()                            # …/plate/make_plate.py
+fx.plate_image_path()                       # the pre-baked 150dpi plate
+fx.tokens_css_path("print")                 # …/dist/tokens.print.css
+fx.theme_path("themes/V3/Foxhole/style.less")
+fx.path("dist/tokens.json")                 # anything, by relative path
+```
+
+`fx.path()` returns a real `pathlib.Path` (what WeasyPrint, Pillow and
+`subprocess` need), extracting from a zip import only if it ever has to. The
+plain `importlib.resources` spelling works too:
+
+```python
+from importlib.resources import files
+files("foxhole_styles").joinpath("print").joinpath("foxhole-print.css")
+```
+
+The manifest is exposed with its digests, so a consumer can prove it loaded
+the bytes the release shipped:
+
+```python
+fx.assets("font")           # [Asset(path='fonts/OFL.txt', role='font', …), …]
+fx.asset("print/foxhole-print.css").sha256
+fx.verify_assets()          # [] — every installed asset matches the manifest
+```
+
+Baking plates from the installed package:
+
+```python
+import subprocess, sys, foxhole_styles as fx
+subprocess.run([sys.executable, str(fx.plate_baker()),
+                "--pages", "3", "--dpi", "150", "--out", "paper-plate.png"],
+               check=True)       # needs Pillow in the consumer's env
+```
+
+### Tests
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+`tests/test_accessor.py` runs against the installed package alone and is the
+post-install smoke test; `tests/test_repo_sync.py` additionally checks the
+installed bytes against the checkout and that the version is still
+single-sourced from `package.json` (it skips when there is no checkout).
+
+### Building it by hand
+
+`python -m build` writes into `dist/` by default, which here is the committed
+token build — always redirect it:
+
+```bash
+python -m build --outdir build-artifacts
+```
 
 ## Plates
 

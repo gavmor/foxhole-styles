@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "foxhole-styles"
+dynamic = ["version"]
+description = "Foxhole field-paperwork design system: DTCG design tokens, fonts, aged-paper plates and print CSS, for Python consumers."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Gavin Morgan", email = "hello@gavmor.com" }]
+keywords = ["design-tokens", "dtcg", "weasyprint", "typography", "print"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Artistic Software",
+  "Topic :: Printing",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/gavmor/foxhole-styles"
+Source = "https://github.com/gavmor/foxhole-styles"
+
+# The Python distribution version is read straight out of package.json, so
+# Changesets bumping the npm package also bumps the wheel. There is no second
+# version literal to forget.
+[tool.hatch.version]
+path = "package.json"
+pattern = '"version":\s*"(?P<version>[^"]+)"'
+
+[tool.hatch.build.targets.wheel]
+packages = ["foxhole_styles"]
+
+# Generated outputs and binary assets live at the repo root (that is where the
+# npm package, the LESS theme and the WeasyPrint pipeline expect them). Mirror
+# that tree inside the import package so the package-root-relative paths
+# recorded in dist/manifest.json resolve verbatim against
+# importlib.resources.files("foxhole_styles").
+#
+# dist/ is enumerated file by file on purpose: `python -m build` defaults to
+# writing wheels into ./dist, and a stray .whl must never end up shipped.
+[tool.hatch.build.targets.wheel.force-include]
+"dist/tokens.css" = "foxhole_styles/dist/tokens.css"
+"dist/tokens.print.css" = "foxhole_styles/dist/tokens.print.css"
+"dist/tokens.less" = "foxhole_styles/dist/tokens.less"
+"dist/tokens.js" = "foxhole_styles/dist/tokens.js"
+"dist/tokens.d.ts" = "foxhole_styles/dist/tokens.d.ts"
+"dist/tokens.json" = "foxhole_styles/dist/tokens.json"
+"dist/manifest.json" = "foxhole_styles/dist/manifest.json"
+"fonts" = "foxhole_styles/fonts"
+"plate" = "foxhole_styles/plate"
+"print" = "foxhole_styles/print"
+"homebrewery" = "foxhole_styles/homebrewery"
+
+# An sdist has to carry package.json (the version source) and the DTCG sources
+# as well as everything the wheel ships, so that sdist -> wheel still builds.
+#
+# dist/ needs force-include rather than include: hatchling unconditionally
+# excludes `/dist` (its own default build output directory, hard-coded in
+# hatchling.builders.constants.DEFAULT_BUILD_DIRECTORY), and force-include is
+# the only selection that bypasses that exclusion. Without this the sdist
+# builds fine and the wheel-from-sdist then fails on a missing forced include.
+[tool.hatch.build.targets.sdist]
+include = [
+  "/foxhole_styles",
+  "/fonts",
+  "/plate",
+  "/print",
+  "/homebrewery",
+  "/tokens",
+  "/scripts",
+  "/tests",
+  "/package.json",
+  "/pyproject.toml",
+  "/README.md",
+]
+
+[tool.hatch.build.targets.sdist.force-include]
+"dist/tokens.css" = "dist/tokens.css"
+"dist/tokens.print.css" = "dist/tokens.print.css"
+"dist/tokens.less" = "dist/tokens.less"
+"dist/tokens.js" = "dist/tokens.js"
+"dist/tokens.d.ts" = "dist/tokens.d.ts"
+"dist/tokens.json" = "dist/tokens.json"
+"dist/manifest.json" = "dist/manifest.json"

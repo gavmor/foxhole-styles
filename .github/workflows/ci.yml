@@ -29,3 +29,36 @@ jobs:
       # Catches files that would be missing from (or wrongly included in) the
       # published tarball before a release does.
       - run: npm pack --dry-run
+
+  python:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.x
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm ci
+      - run: npm run build
+      # Build the Python wheel (proves pyproject.toml is valid and assets pack)
+      - run: pip install build && python -m build
+      # Verify the built wheel carries the same version as package.json
+      - name: Version sync check
+        run: |
+          set -euo pipefail
+          NPM_VER=$(node -p "require('./package.json').version")
+          WHEEL_VER=$(python -c "
+          from pathlib import Path
+          import re
+          whl = next(Path('dist').glob('*.whl'))
+          print(re.search(r'-(\d+\.\d+\.\d+[^-]*)-', whl.name).group(1))
+          ")
+          if [ "$NPM_VER" != "$WHEEL_VER" ]; then
+            echo "ERROR: npm version ($NPM_VER) != wheel version ($WHEEL_VER)"
+            exit 1
+          fi
+          echo "Versions in sync: $NPM_VER"

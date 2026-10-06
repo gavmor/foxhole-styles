@@ -1,3 +1,15 @@
 node_modules/
 npm-debug.log*
 .DS_Store
+
+# Python. `python -m build` defaults to ./dist, which here is the committed
+# token build — always use --outdir, and never let a stray artifact in.
+/build-artifacts/
+/dist/*.whl
+/dist/*.tar.gz
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
